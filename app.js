@@ -1,14 +1,15 @@
-const productsEl = document.querySelector(".products");
-const cartItemsEl = document.querySelector(".cart-items");
-const subtotalEl = document.querySelector(".subtotal");
-const checkoutEl = document.querySelector(".checkout");
+// SELECT ELEMENTS
+const productsElement = document.querySelector(".products");
+const cartItemsElement = document.querySelector(".cart-items");
+const subtotalElement = document.querySelector(".subtotal");
+const checkoutElement = document.querySelector(".checkout");
 
-const totalItemsInCartEl = document.querySelector(".total-items-in-cart");
+const totalItemsInCartElement = document.querySelector(".total-items-in-cart");
 
-// RENDER PRODUCTS
-function renderProdcuts() {
+// Show PRODUCTS
+const ShowProducts=()=> {
   products.forEach((product) => {
-    productsEl.innerHTML += `
+    productsElement.innerHTML += `
             <div class="item">
                 <div class="item-container">
                     <div class="item-img" onclick="addToCart(${product.id})">
@@ -26,4 +27,78 @@ function renderProdcuts() {
         `;
   });
 }
-renderProdcuts();
+ShowProducts();
+
+let cart = [];
+updateCart();
+
+// ADD TO CART
+function addToCart(id) {
+  
+ 
+    if (cart.some((item) => item.id === id)) {
+        changeNumberOfUnits("plus", id);
+      } else {
+        const item = products.find((product) => product.id === id);
+    
+        cart.push({
+          ...item,
+          numberOfUnits: 1,
+        });
+      }
+    
+      updateCart();
+}
+
+// update cart
+function updateCart() {
+  ShowCartItems();
+  ShowSubtotal();
+
+  
+}
+
+// calculate and render subtotal
+function ShowSubtotal() {
+  let totalPrice = 0,
+    totalItems = 0;
+
+  cart.forEach((item) => {
+    totalPrice += item.price * item.numberOfUnits;
+    totalItems += item.numberOfUnits;
+  });
+
+  subtotalElement.innerHTML = `Subtotal (${totalItems} items): $${totalPrice.toFixed(
+    2
+  )}`;
+  checkoutElement.innerHTML = `Pay BDT ${totalPrice.toFixed(2)}`;
+  totalItemsInCartElement.innerHTML = totalItems;
+}
+
+// render cart items
+function ShowCartItems() {
+  cartItemsElement.innerHTML = ""; // clear cart element
+  cart.forEach((item) => {
+    cartItemsElement.innerHTML += `
+        <div class="cart-item">
+
+        <div class="item-info" onclick="removeItemFromCart(${item.id})">
+       <button> delete</button>
+    </div>
+            <div class="item-info" ">
+                <img src="${item.imgSrc}" alt="${item.name}">
+                <h4>${item.name}</h4>
+            </div>
+            <div class="unit-price">
+                <small>$</small>${item.price}
+            </div>
+            <div class="units">
+                <div class="btn minus" onclick="changeNumberOfUnits('minus', ${item.id})">-</div>
+                <div class="number">${item.numberOfUnits}</div>
+                <div class="btn plus" onclick="changeNumberOfUnits('plus', ${item.id})">+</div>           
+            </div>
+        </div>
+      `;
+  });
+}
+
