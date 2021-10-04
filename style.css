@@ -171,15 +171,15 @@
   .cart-item .units .number {
     margin: 0 10px;
   
-    font-size: 1.2rem;
+    font-size: 2rem;
   }
   .cart-item .units .btn {
     width: 40px;
     height: 40px;
   
-    background-color: rgb(242, 255, 58);
+    background-color: rgb(255, 58, 84);
   
-    border-radius: 50%;
+    border-radius: 20%;
   
     font-weight: bold;
   
@@ -187,6 +187,7 @@
   
     
   }
+  
 
 
   .cart-footer {
