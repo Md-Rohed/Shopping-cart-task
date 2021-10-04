@@ -7,7 +7,7 @@ const checkoutElement = document.querySelector(".checkout");
 const totalItemsInCartElement = document.querySelector(".total-items-in-cart");
 
 // Show PRODUCTS
-const ShowProducts=()=> {
+const ShowProducts = () => {
   products.forEach((product) => {
     productsElement.innerHTML += `
             <div class="item">
@@ -17,7 +17,7 @@ const ShowProducts=()=> {
                     </div>
                     <div class="desc">
                         <h2>${product.name}</h2>
-                        <h2><small>$</small>${product.price}</h2>
+                       
                        
                     </div>
                     
@@ -26,7 +26,7 @@ const ShowProducts=()=> {
             </div>
         `;
   });
-}
+};
 ShowProducts();
 
 let cart = [];
@@ -34,28 +34,24 @@ updateCart();
 
 // ADD TO CART
 function addToCart(id) {
-  
- 
-    if (cart.some((item) => item.id === id)) {
-        changeNumberOfUnits("plus", id);
-      } else {
-        const item = products.find((product) => product.id === id);
-    
-        cart.push({
-          ...item,
-          numberOfUnits: 1,
-        });
-      }
-    
-      updateCart();
+  if (cart.some((item) => item.id === id)) {
+    changeNumberOfUnits("plus", id);
+  } else {
+    const item = products.find((product) => product.id === id);
+
+    cart.push({
+      ...item,
+      numberOfUnits: 1,
+    });
+  }
+
+  updateCart();
 }
 
 // update cart
 function updateCart() {
   ShowCartItems();
   ShowSubtotal();
-
-  
 }
 
 // calculate and render subtotal
@@ -90,7 +86,7 @@ function ShowCartItems() {
                 <h4>${item.name}</h4>
             </div>
             <div class="unit-price">
-                <small>$</small>${item.price}
+                <small>BDT</small>${item.price}
             </div>
             <div class="units">
                 <div class="btn minus" onclick="changeNumberOfUnits('minus', ${item.id})">-</div>
@@ -101,4 +97,31 @@ function ShowCartItems() {
       `;
   });
 }
+// remove item from cart
+function removeItemFromCart(id) {
+  cart = cart.filter((item) => item.id !== id);
 
+  updateCart();
+}
+
+// change number of units for an item
+function changeNumberOfUnits(action, id) {
+  cart = cart.map((item) => {
+    let numberOfUnits = item.numberOfUnits;
+
+    if (item.id === id) {
+      if (action === "minus" && numberOfUnits > 1) {
+        numberOfUnits--;
+      } else if (action === "plus") {
+        numberOfUnits++;
+      }
+    }
+
+    return {
+      ...item,
+      numberOfUnits,
+    };
+  });
+
+  updateCart();
+}
