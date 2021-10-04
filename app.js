@@ -99,6 +99,7 @@ function ShowCartItems() {
 }
 // remove item from cart
 function removeItemFromCart(id) {
+<<<<<<< HEAD
   cart = cart.filter((item) => item.id !== id);
 
   updateCart();
@@ -116,6 +117,35 @@ function changeNumberOfUnits(action, id) {
         numberOfUnits++;
       }
     }
+=======
+    cart = cart.filter((item) => item.id !== id);
+  
+    updateCart();
+  }
+  
+  // change number of units for an item
+  function changeNumberOfUnits(action, id) {
+    cart = cart.map((item) => {
+      let numberOfUnits = item.numberOfUnits;
+  
+      if (item.id === id) {
+        if (action === "minus" && numberOfUnits > 1) {
+          numberOfUnits--;
+        } else if (action === "plus" && numberOfUnits < item.instock) {
+          numberOfUnits++;
+        }
+      }
+  
+      return {
+        ...item,
+        numberOfUnits,
+      };
+    });
+  
+    updateCart();
+  }
+  
+>>>>>>> 91733cdf397f8533fc784016a77f15261fbe3198
 
     return {
       ...item,
